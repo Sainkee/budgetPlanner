@@ -98,7 +98,7 @@ export default function Dashboard() {
                   ))}
               </div>
 
-              {expenses.length > 0 && (
+              {expenses && expenses.length > 0 && (
                 <>
                   <h2 className="text-4xl my-10 font-bold">Recent Expenses</h2>
 
