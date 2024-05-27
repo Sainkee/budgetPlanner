@@ -1,5 +1,5 @@
-import { Plus, PlusCircle } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { PlusCircle } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
 import { useFetcher } from "react-router-dom";
 export default function AddExpenceForm({ budget }) {
   const fetcher = useFetcher();
@@ -8,6 +8,7 @@ export default function AddExpenceForm({ budget }) {
 
   const formRef = useRef();
   const focusRef = useRef();
+  const [optVal, setOptVal] = useState("");
 
   useEffect(() => {
     if (!isSubmitting) {
@@ -21,8 +22,11 @@ export default function AddExpenceForm({ budget }) {
       <div className="  border-2 border-black rounded-2xl p-5  flex flex-col gap-5 border-dashed">
         <h2 className="text-xl capitalize font-bold">
           Add new{" "}
-          <span className="text-cyan-500">
-            {budget.length === 1 && `${budget.map((budg) => budg.name)}`}
+          <span className="text-cyan-500 lowercase">
+            {budget &&
+              budget.length === 1 &&
+              `${budget.map((budg) => budg.name)}`}
+            {budget && budget.length > 1 && optVal}
           </span>{" "}
           Expense
         </h2>
@@ -60,23 +64,25 @@ export default function AddExpenceForm({ budget }) {
             <input type="hidden" value="createExpense" name="_action" />
           </div>
 
-          <div className="my-2" hidden={budget.length === 1}>
+          <div className="my-2" hidden={budget && budget.length === 1}>
             <label className="font-semibold" htmlFor="newExpenseBudget">
               Budget categories
             </label>
             <select
               id="newExpenseBudget"
               required
+              onChange={(e) => setOptVal(e.target.value)}
               name="newExpenseBudget"
               className="border-2 border-slate-500 border-solid p-2 focus:border-cyan-500 w-full   rounded-md "
             >
-              {budget
-                .sort((a, b) => a.createdAt - b.createdAt)
-                .map((bud) => (
-                  <option key={bud.id} value={bud.id}>
-                    {bud.name}
-                  </option>
-                ))}
+              {budget &&
+                budget
+                  .sort((a, b) => a.createdAt - b.createdAt)
+                  .map((bud) => (
+                    <option key={bud.id} value={bud.name}>
+                      {bud.name}
+                    </option>
+                  ))}
             </select>
           </div>
 

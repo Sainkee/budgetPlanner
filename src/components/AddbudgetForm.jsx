@@ -2,8 +2,7 @@ import { CircleDollarSign } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import { useFetcher } from "react-router-dom";
 
-export default function AddBudget({ userName, budgets }) {
-  console.log(budgets);
+export default function AddBudgetForm() {
   const fetcher = useFetcher();
 
   const isSubmitting = fetcher.state === "submitting";
@@ -19,7 +18,7 @@ export default function AddBudget({ userName, budgets }) {
   }, [isSubmitting]);
 
   return (
-    < div className="bg-white w-full p-3 rounded-2xl">
+    <div className="bg-white w-full p-3 rounded-2xl">
       <fetcher.Form method="post" className="" ref={formRef}>
         <div className=" border-2 border-black rounded-2xl p-5  flex flex-col gap-5 border-dashed">
           <h2 className="text-xl capitalize font-bold">Create budget</h2>

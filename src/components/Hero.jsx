@@ -1,6 +1,4 @@
-
-
-export default function AddBudget({userName,budget}) {
+export default function Hero({ userName, budget }) {
   return (
     <div className=" w-full mx-auto">
       <h1 className="text-6xl font-bold  text-black mt-10">

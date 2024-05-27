@@ -4,8 +4,9 @@ import MainBord, { MainLoader } from "./components/MainBord";
 import { logoutAction } from "./components/Helper";
 import Error from "./components/Error";
 
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AllExpense, { deleteAction, expenseLoader } from "./components/AllExpense";
 function App() {
   const router = createBrowserRouter([
     {
@@ -23,11 +24,12 @@ function App() {
         },
 
         {
-          path: "/contact",
-          element: <h1>Contact</h1>,
+          path: "/AllExpenses",
+          element: <AllExpense />,
+          loader: expenseLoader,
+          action:deleteAction
         },
       ],
-     
     },
     {
       path: "logout",

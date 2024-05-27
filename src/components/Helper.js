@@ -1,4 +1,3 @@
-import { Currency } from "lucide-react";
 import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -19,6 +18,8 @@ export const logoutAction = () => {
   toast.success(user + " You are logged out");
 
   localStorage.removeItem("userName");
+  localStorage.removeItem("expense");
+  localStorage.removeItem("budgets");
 
   return redirect("/");
 };
@@ -38,42 +39,55 @@ export const createBudget = ({ name, amount }) => {
     JSON.stringify([...existingBudget, newItem])
   );
 };
-export const createExpense = ({ name, amount, expenseId }) => {
+export const createExpense = ({ name, amount, budgetId }) => {
   const newItem = {
     name: name,
     id: self.crypto.randomUUID(),
     createdAt: Date.now(),
     amount: +amount,
-    expenseId: expenseId,
+    budgetId: budgetId,
   };
   // ?? for if undefined or null then return []
   const existingexpense = fetchData("expense") ?? [];
-  console.log(existingexpense);
   return localStorage.setItem(
     "expense",
     JSON.stringify([...existingexpense, newItem])
   );
 };
 
-export const waitTime = () => {
-  return new Promise((resolve) => setTimeout(resolve, Math.random() * 2000));
+export const deleteExpence = (id) => {
+  const expenseData = fetchData("expense") || [];
+  const newExpense = expenseData.filter((expense) => expense.id !== id);
+  return localStorage.setItem("expense", JSON.stringify(newExpense));
 };
 
-export const formateCurrency = (amt) => {
+export const waitTime = () => {
+  return new Promise((resolve) => setTimeout(resolve, Math.random() * 800));
+};
+
+export const formatCurrency = (amt) => {
   return amt.toLocaleString(undefined, {
     style: "currency",
     currency: "INR",
   });
 };
 
+export const formatPercents = (amount) => {
+  return amount.toLocaleString(undefined, {
+    style: "percent",
+    minimumFractionDigits: 0,
+  });
+};
+
 export const calculateSpentByBudget = (budgetId) => {
-  const expenseData = fetchData("expense")||[];
+  const expenseData = fetchData("expense") || [];
 
   const expenseAmount = expenseData.reduce((acc, expense) => {
     if (expense.budgetId === budgetId) {
-      return acc + expense.amount;
+      acc += parseFloat(expense.amount);
     }
     return acc;
   }, 0);
-  return formateCurrency(expenseAmount);
+
+  return expenseAmount;
 };
