@@ -1,5 +1,7 @@
-import { redirect } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getAuth, signOut } from "firebase/auth";
+import app from "./firebase";
+import { redirect } from "react-router-dom";
 
 export const fetchData = (key) => {
   try {
@@ -16,14 +18,33 @@ export const getAllMatching = ({ category, key, value }) => {
   return data.filter((item) => item[key] === value);
 };
 
-export const logoutAction = () => {
-  let userData = localStorage.getItem("userName");
-  const user = JSON.parse(userData).toUpperCase();
-  toast.success(user + " You are logged out");
+export const logoutAction = async () => {
+  const auth = getAuth(app);
+  const currentUser = auth.currentUser;
 
-  localStorage.removeItem("userName");
-  localStorage.removeItem("expense");
-  localStorage.removeItem("budgets");
+  if (currentUser) {
+    try {
+      await signOut(auth);
+      const userName = currentUser.displayName || "User";
+      localStorage.removeItem("userName");
+      localStorage.removeItem("expense");
+      localStorage.removeItem("budgets");
+      toast.success(`${userName}, you are logged out`);
+      return redirect("/");
+    } catch (error) {
+      console.error("Error during sign-out:", error);
+      toast.error("Failed to log out");
+      return redirect("/");
+    }
+  }
+  const userData = fetchData("userName");
+  if (userData) {
+    const user = userData.toUpperCase();
+    toast.success(user + " You are logged out");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("expense");
+    localStorage.removeItem("budgets");
+  }
 
   return redirect("/");
 };
