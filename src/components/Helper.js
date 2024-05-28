@@ -12,6 +12,11 @@ export const fetchData = (key) => {
   }
 };
 
+export const getAllMatching = ({ category, key, value }) => {
+  const data = fetchData(category) ?? [];
+  return data.filter(item => item[key] === value)
+};
+
 export const logoutAction = () => {
   let userData = localStorage.getItem("userName");
   const user = JSON.parse(userData).toUpperCase();

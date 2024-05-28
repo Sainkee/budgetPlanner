@@ -17,7 +17,9 @@ export default function MainBord() {
   return (
     <>
       <Navbar userData={userData} />
-      <Outlet />
+      <div className="lg:w-[90%] w-[95%] mx-auto">
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

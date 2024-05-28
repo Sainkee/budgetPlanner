@@ -77,7 +77,7 @@ export default function Dashboard() {
   const { userData, budgets, expenses } = useLoaderData();
 
   return (
-    <div className="lg:w-[90%] w-[95%]    mx-auto ">
+    <div className=" ">
       {!userData ? (
         <Intro />
       ) : (
