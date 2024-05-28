@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Form, useFetcher } from "react-router-dom";
-import { User } from "lucide-react";
+import { MoveRight, User } from "lucide-react";
 
 import illu from "../assets/illustration.jpg";
 // google authorization
@@ -36,7 +36,7 @@ export default function Intro() {
           <div className="flex gap-5 pt-2 ">
             <button
               type="submit"
-              className="bg-blue-500 disabled:bg-slate-500 hover:bg-blue-600 text-white py-2 px-4 gap-2 flex items-center rounded-md"
+              className="bg-black disabled:bg-slate-500 hover:bg-cyan-600 text-white py-2 px-4 gap-2 flex items-center rounded-md"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -44,7 +44,7 @@ export default function Intro() {
                   Logging in... <span className="animate-spin">&#9696;</span>
                 </>
               ) : (
-                <>{!val ? <>Login with Google</> : <>Login</>}</>
+                <>{!val ? <>Login with Google</> : <>Login  </>}  <MoveRight /> </>
               )}
             </button>
           </div>
