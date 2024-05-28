@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 export const fetchData = (key) => {
   try {
     const userData = localStorage.getItem(key);
-
     return JSON.parse(userData);
   } catch (error) {
     console.error("Error parsing JSON:", error);
@@ -14,7 +13,7 @@ export const fetchData = (key) => {
 
 export const getAllMatching = ({ category, key, value }) => {
   const data = fetchData(category) ?? [];
-  return data.filter(item => item[key] === value)
+  return data.filter((item) => item[key] === value);
 };
 
 export const logoutAction = () => {

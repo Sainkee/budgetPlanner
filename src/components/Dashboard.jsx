@@ -10,11 +10,11 @@ import BudgetItem from "./BudgetItem";
 import TableItem from "./TableItem";
 import { ChevronRight } from "lucide-react";
 import Hero from "./Hero";
-
+import authenticate from "./Auth";
 export const DashboardLoder = () => {
-  const userData = fetchData("userName");
   const budgets = fetchData("budgets");
   const expenses = fetchData("expense");
+  const userData = fetchData("userName") ?? null;
 
   return { userData, budgets, expenses };
 };
@@ -25,8 +25,26 @@ export const formAction = async ({ request }) => {
     const { _action, ...values } = Object.fromEntries(data.entries());
 
     if (_action === "newUser") {
-      localStorage.setItem("userName", JSON.stringify(values.userName));
-      return toast.success(`welcome , ${values.userName}`);
+      try {
+        if (values.userName) {
+          localStorage.setItem("userName", JSON.stringify(values.userName));
+          toast.success(`Welcome ${values.userName}`);
+          return null;
+        } else {
+          const user = await authenticate();
+          if (user && user.displayName) {
+            localStorage.setItem("userName", JSON.stringify(user.displayName));
+            toast.success(`Welcome ${user.displayName}`);
+            return null;
+          } else {
+            throw new Error("User object is undefined or missing displayName");
+          }
+        }
+      } catch (error) {
+        console.error("Error during authentication:", error);
+        toast.error("Login failed. Please try again.");
+        return null;
+      }
     }
 
     if (_action === "createBudget") {
@@ -68,8 +86,8 @@ export const formAction = async ({ request }) => {
       }
     }
   } catch (error) {
-    console.error("Error processing form data:", error);
-    throw new error(); //
+    return console.error("Error processing form data:", error);
+    //
   }
 };
 
